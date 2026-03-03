@@ -4,9 +4,8 @@ A real-time chat application built with **ASP.NET Core 10**, **SignalR**, and **
 
 ---
 ## 📂 Project Structure
-
+```scss
 src/
-
 ├── ChatApp.slnx                  
 └── ChatApp/                      
     ├── Controllers/              
@@ -18,7 +17,7 @@ src/
     ├── .env                      
     ├── ChatApp.csproj            
     └── Program.cs                
-
+```
 ---
 
 # 🗄️ 1. Backend Setup (Microsoft SQL Server)
@@ -87,7 +86,7 @@ Click **OK**
 - Install **.NET 10 SDK:**
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-10.0.103-windows-x64-installer
 
-- Install **.NET 10 Hosting Bundle:** (Required for IIS)
+- Install **.NET 10 Hosting Bundle** (Required for IIS):
 https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/dotnet-hosting-10.0.3-win.exe
 
 ---
@@ -139,24 +138,19 @@ dotnet publish -c Release -o D:\Publish
 ### 🌐 Configure IIS
 Create Website
 
-Open IIS Manager
-
-Right-click Sites → Add Website
-
+- Open IIS Manager
+- Right-click Sites → Add Website
 Set:
-Physical Path: D:\Publish
-Port: 80 (or custom 5000)
+- Physical Path: D:\Publish
+- Port: 80 (or custom 5000)
 
 ### ⚙️ Application Pool Settings
 
-Go to Application Pools
-
-Select your site pool
-
-Click Basic Settings
-
+- Go to Application Pools
+- Select your site pool
+- Click Basic Settings
 Set:
-.NET CLR Version → No Managed Code
+- .NET CLR Version → No Managed Code
 
 ---
 
