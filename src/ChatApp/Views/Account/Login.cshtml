@@ -1,0 +1,12 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow p-4" style="width: 350px;">
+        <h2 class="text-center mb-3">Login</h2>
+        @if(ViewBag.Error != null){ <div class="alert alert-danger">@ViewBag.Error</div> }
+        <form asp-action="Login" method="post">
+            <div class="mb-3"><input name="email" type="email" class="form-control" placeholder="Email" required /></div>
+            <div class="mb-3"><input name="password" type="password" class="form-control" placeholder="Password" required /></div>
+            <button type="submit" class="btn btn-success w-100">Login</button>
+            <div class="text-center mt-3">No account? <a asp-action="Signup">Sign Up</a></div>
+        </form>
+    </div>
+</div>

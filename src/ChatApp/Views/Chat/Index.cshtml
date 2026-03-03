@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ChatApp.Models.User>
+<div class="container mt-4">
+    <div class="row" style="height: 80vh;">
+        <div class="col-md-3 border-end bg-light p-3">
+            <h5>Contacts</h5>
+            <div class="list-group">
+                @foreach (var user in Model) {
+                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" 
+                            onclick="openChat('@user.Id', '@user.FullName')">
+                        @user.FullName
+                        <span class="badge @(user.IsOnline ? "bg-success" : "bg-secondary") rounded-pill">●</span>
+                    </button>
+                }
+            </div>
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-danger btn-sm w-100 mt-3">Logout</a>
+        </div>
+        <div class="col-md-9 p-3">
+            <h5 id="targetName">Select a user to chat</h5>
+            <div id="chatWindow" class="border p-3 mb-3 bg-white" style="height: 400px; overflow-y: auto;"></div>
+            <div class="input-group">
+                <input type="text" id="userInput" class="form-control" placeholder="Type message..." disabled>
+                <input type="file" id="fileInput" style="display:none" onchange="uploadFile()" />
+                <button class="btn btn-outline-secondary" onclick="document.getElementById('fileInput').click()" id="fileBtn" disabled>📎</button>
+                <button id="sendBtn" class="btn btn-primary" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+<script>
+    let activeReceiverId = null;
+    const currentUserId = "@Context.Session.GetInt32("UserId")";
+    const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    connection.on("ReceivePrivateMessage", (senderId, senderName, message, filePath) => {
+        appendMessage(senderName, message, filePath);
+    });
+
+    connection.start();
+
+    async function openChat(id, name) {
+        activeReceiverId = id;
+        document.getElementById("targetName").innerText = "Chatting with: " + name;
+        document.getElementById("userInput").disabled = false;
+        document.getElementById("sendBtn").disabled = false;
+        document.getElementById("fileBtn").disabled = false;
+        document.getElementById("chatWindow").innerHTML = "Loading history...";
+
+        const response = await fetch(`/Chat/GetChatHistory?receiverId=${id}`);
+        const history = await response.json();
+        document.getElementById("chatWindow").innerHTML = "";
+        history.forEach(m => {
+            const name = m.senderId == currentUserId ? "Me" : "Partner";
+            appendMessage(name, m.message, m.filePath);
+        });
+    }
+
+    function appendMessage(name, message, filePath) {
+        const box = document.getElementById("chatWindow");
+        let content = `<div><strong>${name}:</strong> `;
+        if (message) content += message;
+        if (filePath) content += `<br/><a href="${filePath}" target="_blank" class="btn btn-sm btn-info text-white">Download File</a>`;
+        content += `</div><hr/>`;
+        box.innerHTML += content;
+        box.scrollTop = box.scrollHeight;
+    }
+
+    document.getElementById("sendBtn").onclick = () => {
+        const input = document.getElementById("userInput");
+        if (activeReceiverId && input.value) {
+            connection.invoke("SendPrivateMessage", activeReceiverId, input.value);
+            input.value = "";
+        }
+    };
+
+    async function uploadFile() {
+        const file = document.getElementById("fileInput").files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("receiverId", activeReceiverId);
+
+        const res = await fetch('/Chat/UploadFile', { method: 'POST', body: formData });
+        const data = await res.json();
+        // Notify the other user via SignalR about the file
+        connection.invoke("SendPrivateMessage", activeReceiverId, `Shared a file: ${data.fileName}`);
+    }
+</script>
