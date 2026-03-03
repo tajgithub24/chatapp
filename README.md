@@ -73,8 +73,7 @@ In the Object Explorer:
 
 1. Right-click **Databases**
 2. Click **New Database**
-3. Name it:
-ChatAppDB
+3. Name it: `ChatAppDB`
 Click **OK**
 
 ---
@@ -94,14 +93,23 @@ https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/dotnet-host
 ## 🔐 Environment Configuration
 
 Create a `.env` file inside:
-
 src/ChatApp/
 
-Add:
+Add the following:
+
 ```bash
 CHATA_DB_CONN=Server=<DB-SERVER_IP>;Database=ChatAppDB;User Id=chatapp_admin;Password=<Password>;TrustServerCertificate=True;
-CHATA_UPLOAD_PATH=D:\ChatAppStorage\ ## Give your storage path
+CHATA_UPLOAD_PATH=D:\ChatAppStorage\
 ```
+⚠️ Ensure the folder D:\ChatAppStorage\ exists.
+
+The IIS Application Pool identity must have write permissions on this folder.
+You may use a different path, but make sure:
+
+- The folder exists.
+- The same path is configured here.
+- Proper permissions are granted.
+
 ---
 
 ## 🏗️ Build & Apply Migrations
@@ -134,7 +142,7 @@ dotnet run
 ```powershell
 dotnet publish -c Release -o D:\Publish
 ```
-
+Note: Copy the .env file as well in D:\Publish folder manually
 ### Install IIS (Windows Server)
 
 Run PowerShell as Administrator:
@@ -144,6 +152,15 @@ Install-WindowsFeature -name Web-Server, Web-WebSockets
 Restart IIS after installation:
 ```powershell
 iisreset
+```
+
+### Grant Folder Permissions
+
+Run PowerShell as Administrator:
+
+```powershell
+icacls "D:\Publish" /grant "IIS AppPool\<YourAppPoolName>:(OI)(CI)RX"
+icacls "D:\ChatAppStorage" /grant "IIS AppPool\<YourAppPoolName>:(OI)(CI)F"
 ```
 
 ### 🌐 Configure IIS
