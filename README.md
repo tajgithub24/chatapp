@@ -154,15 +154,6 @@ Restart IIS after installation:
 iisreset
 ```
 
-### Grant Folder Permissions
-
-Run PowerShell as Administrator:
-
-```powershell
-icacls "D:\Publish" /grant "IIS AppPool\<YourAppPoolName>:(OI)(CI)RX"
-icacls "D:\ChatAppStorage" /grant "IIS AppPool\<YourAppPoolName>:(OI)(CI)F"
-```
-
 ### 🌐 Configure IIS
 Create Website
 
@@ -181,5 +172,13 @@ Set:
 Set:
 - .NET CLR Version → No Managed Code
 
+### Grant Folder Permissions
+
+Run PowerShell as Administrator:
+
+```powershell
+icacls "D:\Publish" /grant "IIS AppPool\<YourAppPoolName>:(OI)(CI)RX"
+icacls "D:\ChatAppStorage" /grant "IIS AppPool\<YourAppPoolName>:(OI)(CI)F"
+```
 ---
 
