@@ -135,7 +135,7 @@ dotnet run
 dotnet publish -c Release -o D:\Publish
 ```
 
-## Install IIS (Windows Server)
+### Install IIS (Windows Server)
 
 Run PowerShell as Administrator:
 ```powershell
