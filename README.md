@@ -147,8 +147,9 @@ Set:
 ### ⚙️ Application Pool Settings
 
 - Go to Application Pools
-- Select your site pool
+- Select your site pool → Right Click
 - Click Basic Settings
+
 Set:
 - .NET CLR Version → No Managed Code
 
