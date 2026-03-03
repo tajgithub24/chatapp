@@ -6,6 +6,7 @@ A real-time chat application built with **ASP.NET Core 10**, **SignalR**, and **
 ## 📂 Project Structure
 
 src/
+
 ├── ChatApp.slnx                  
 └── ChatApp/                      
     ├── Controllers/              
@@ -24,31 +25,33 @@ src/
 
 ## 📥 Installation
 
-- Install **SQL Server 2022 Express**
+- Install **SQL Server 2022 Express:**
 https://go.microsoft.com/fwlink/p/?linkid=2216019&clcid=0x409&culture=en-us&country=us
 
 
-- Install **SQL Server Management Studio (SSMS)**
+- Install **SQL Server Management Studio (SSMS):**
 https://aka.ms/ssms/22/release/vs_SSMS.exe
 
 ---
-
 ## ⚙️ Server Configuration
 
 1. Open **SSMS**
 2. Connect to `localhost` using **Windows Authentication**
-3. Right-click your **Server Name** → **Properties**
-4. Go to **Security**
-5. Select:
+
+In the Object Explorer:
+- Right-click your **Server Name(localhost)** → **Properties**
+- Go to **Security**
+- Select:
 SQL Server and Windows Authentication mode
-6. Click **OK**
-7. Restart SQL Server (Important)
+- Click **OK**
+- Restart SQL Server (Important)
 
 ⚠️ SQL logins will NOT work until SQL Server service is restarted.
 
 ---
 
 ## 🧑‍💻 Create Login
+In the Object Explorer:
 
 1. Go to **Security → Logins**
 2. Right-click → **New Login**
@@ -59,31 +62,34 @@ Fill:
 - **Authentication:** SQL Server Authentication
 - **Password:** `<your_passwd>`
 - Uncheck: `Enforce password policy`
-- Go to **Server Roles**
+- In the left hand Go to **Server Roles**
 - Check: `sysadmin`
 
 Click **OK**
 
 ---
+
 ## 🗃️ Create Database
+In the Object Explorer:
 
 1. Right-click **Databases**
 2. Click **New Database**
 3. Name it:
 ChatAppDB
-
 Click **OK**
+
 ---
 
 # 🛠️ 2. Application Setup (Command Line)
 
 ## ✅ Prerequisites
 
-- Install **.NET 10 SDK**
+- Install **.NET 10 SDK:**
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-10.0.103-windows-x64-installer
 
-- Install **.NET 10 Hosting Bundle** (Required for IIS)
+- Install **.NET 10 Hosting Bundle:** (Required for IIS)
 https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.3/dotnet-hosting-10.0.3-win.exe
+
 ---
 
 ## 🔐 Environment Configuration
@@ -93,10 +99,10 @@ Create a `.env` file inside:
 src/ChatApp/
 
 Add:
-
+```bash
 CHATA_DB_CONN=Server=<DB-SERVER_IP>;Database=ChatAppDB;User Id=chatapp_admin;Password=<Password>;TrustServerCertificate=True;
 CHATA_UPLOAD_PATH=D:\ChatAppStorage\ ## Give your storage path
-
+```
 ---
 
 ## 🏗️ Build & Apply Migrations
@@ -151,5 +157,6 @@ Click Basic Settings
 
 Set:
 .NET CLR Version → No Managed Code
+
 ---
 
