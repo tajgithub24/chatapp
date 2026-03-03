@@ -135,6 +135,17 @@ dotnet run
 dotnet publish -c Release -o D:\Publish
 ```
 
+## Install IIS (Windows Server)
+
+Run PowerShell as Administrator:
+```powershell
+Install-WindowsFeature -name Web-Server, Web-WebSockets
+```
+Restart IIS after installation:
+```powershell
+iisreset
+```
+
 ### 🌐 Configure IIS
 Create Website
 
